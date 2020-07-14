@@ -1,0 +1,45 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Upgrade all Installed packages for Debian and Ubuntu
+      apt:
+       update_cache: yes
+       upgrade: dist  
+       force_apt_get: yes 
+       cache_valid_time: 3600
+      when: ansible_os_family == "Debian" 
+    
+    - name: Upgrade all installed packages for Centos
+      yum:
+       name: "*"
+       state: latest
+      when: ansible_os_family == "RedHat"
+    - name: Change TimeZone
+      timezone:
+       name: Asia/Tokyo
+    
+    
+    - name: Installing packages on centos servers
+      package: name={{ item }} state=present
+      with_items:
+         - openssh-7.4p1-21.amzn2.0.1.x86_64
+         - net-tools-2.0-0.22.20131004git.amzn2.0.2.x86_64
+         - git-core-doc-2.23.3-1.amzn2.0.1.noarch
+         - vim-common-8.1.1602-1.amzn2.x86_64
+         - nano-2.9.8-2.amzn2.0.1.x86_64
+         - libnfsidmap-0.25-19.amzn2.x86_64
+         - nfs-utils-1.3.0-0.54.amzn2.0.2.x86_64
+      when: ansible_os_family == "RedHat"
+
+    - name: Installing packages on Debian and Ubuntu
+      package: name={{ item }} state=present
+      with_items:
+         - git
+         - vim
+         - nfs-common
+         - nano
+         - php7.2
+         - php-mysqli
+      when: ansible_os_family == "Debian"

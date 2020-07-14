@@ -1,0 +1,12 @@
+[nfs]
+
+
+
+[jwebservers]
+172.31.53.123	ansible_user=ec2-user
+172.31.62.214
+
+[db]
+
+
+[jenkins-master]
